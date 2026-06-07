@@ -561,7 +561,7 @@ def get_since_until(  # pylint: disable=too-many-arguments,too-many-locals,too-m
         since_and_until_partition = [_.strip() for _ in time_range.split(separator, 1)]
         since_and_until: list[str | None] = []
         for part in since_and_until_partition:
-            if part is None:
+            if not part:
                 since_and_until.append(None)
                 continue
 

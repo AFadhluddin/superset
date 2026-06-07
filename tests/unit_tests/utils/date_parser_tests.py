@@ -284,6 +284,22 @@ def test_get_since_until() -> None:
         get_since_until(time_range="tomorrow : yesterday")
 
 
+@patch("superset.utils.date_parser.parse_human_datetime", mock_parse_human_datetime)
+def test_get_since_until_empty_string_bound() -> None:
+    """Empty-string bounds in colon-separated time ranges should be treated as None."""
+    result = get_since_until("start of this month : ")
+    assert result[1] is None
+    assert result[0] == datetime(2016, 11, 1)
+
+    result = get_since_until(" : now")
+    assert result[0] is None
+    assert result[1] == datetime(2016, 11, 7, 9, 30, 10)
+
+    # Valid closed ranges still work
+    result = get_since_until("2018-01-01T00:00:00 : 2018-12-31T23:59:59")
+    assert result == (datetime(2018, 1, 1), datetime(2018, 12, 31, 23, 59, 59))
+
+
 @with_feature_flags(CHART_PLUGINS_EXPERIMENTAL=True)
 @patch("superset.utils.date_parser.parse_human_datetime", mock_parse_human_datetime)
 def test_get_since_until_instant_time_comparison_enabled() -> None:
