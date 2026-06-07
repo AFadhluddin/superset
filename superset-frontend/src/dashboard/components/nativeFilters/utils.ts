@@ -190,7 +190,7 @@ export const getFilterValueForDisplay = (
     return '';
   }
   if (typeof value === 'string' || typeof value === 'number') {
-    return `${value}`;
+    return value ? `${value}` : '';
   }
   if (Array.isArray(value)) {
     return value.join(', ');
