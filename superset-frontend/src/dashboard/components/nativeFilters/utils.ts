@@ -190,10 +190,10 @@ export const getFilterValueForDisplay = (
     return '';
   }
   if (typeof value === 'boolean') {
-    return value ? 'true' : '';
+    return String(value);
   }
   if (typeof value === 'string' || typeof value === 'number') {
-    return value ? `${value}` : '';
+    return `${value}`;
   }
   if (Array.isArray(value)) {
     return value.join(', ');

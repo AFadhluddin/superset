@@ -760,3 +760,21 @@ def test_datetime_eval_does_not_emit_parsedatetime_debug_logs(
         "flood production logs. Records: "
         + repr([(r.levelname, r.getMessage()) for r in parsedatetime_records])
     )
+
+
+@patch("superset.utils.date_parser.parse_human_datetime", mock_parse_human_datetime)
+def test_get_since_until_whitespace_bounds() -> None:
+    """Empty or whitespace-only bounds should be treated as None."""
+    result = get_since_until("  :  ")
+    assert result == (None, None)
+
+    result = get_since_until(" : ")
+    assert result == (None, None)
+
+    result = get_since_until("yesterday :   ")
+    expected_since = datetime(2016, 11, 6)
+    assert result == (expected_since, None)
+
+    result = get_since_until("   : tomorrow")
+    expected_until = datetime(2016, 11, 8)
+    assert result == (None, expected_until)

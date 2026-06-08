@@ -181,3 +181,13 @@ def test_or_branch_between_quotes_both_bounds():
     result = parser.parse("(OR:!((date:(between:!('2024-01-01','2024-12-31')))))")
     sql = result[0]["sqlExpression"]
     assert "date BETWEEN '2024-01-01' AND '2024-12-31'" in sql
+
+
+def test_parse_empty_string_returns_empty_list():
+    parser = RisonFilterParser()
+    assert parser.parse("") == []
+
+
+def test_parse_whitespace_only_returns_empty_list():
+    parser = RisonFilterParser()
+    assert parser.parse("   ") == []

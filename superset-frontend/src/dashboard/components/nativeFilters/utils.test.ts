@@ -23,6 +23,7 @@ import {
   nativeFilterGate,
   findTabsWithChartsInScope,
   getFormData,
+  getFilterValueForDisplay,
 } from './utils';
 
 // eslint-disable-next-line no-restricted-globals -- TODO: Migrate from describe blocks
@@ -99,4 +100,31 @@ test('getFormData should include persisted time_grains for time grain filters', 
   });
 
   expect((formData as any).time_grains).toEqual(['PT1H', 'P1D', 'P1W']);
+});
+
+test('getFilterValueForDisplay returns "0" for numeric zero', () => {
+  expect(getFilterValueForDisplay(0)).toBe('0');
+});
+
+test('getFilterValueForDisplay returns "false" for boolean false', () => {
+  expect(getFilterValueForDisplay(false)).toBe('false');
+});
+
+test('getFilterValueForDisplay returns "true" for boolean true', () => {
+  expect(getFilterValueForDisplay(true)).toBe('true');
+});
+
+test('getFilterValueForDisplay returns empty string for null/undefined', () => {
+  expect(getFilterValueForDisplay(null)).toBe('');
+  expect(getFilterValueForDisplay(undefined)).toBe('');
+});
+
+test('getFilterValueForDisplay returns string representation for numbers', () => {
+  expect(getFilterValueForDisplay(42)).toBe('42');
+  expect(getFilterValueForDisplay(-1)).toBe('-1');
+});
+
+test('getFilterValueForDisplay returns the string itself for strings', () => {
+  expect(getFilterValueForDisplay('hello')).toBe('hello');
+  expect(getFilterValueForDisplay('')).toBe('');
 });

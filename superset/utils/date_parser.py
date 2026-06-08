@@ -561,9 +561,10 @@ def get_since_until(  # pylint: disable=too-many-arguments,too-many-locals,too-m
         since_and_until_partition = time_range.split(separator, 1)
         since_and_until: list[str | None] = []
         for part in since_and_until_partition:
-            if part is None:
+            if part is None or not part.strip():
                 since_and_until.append(None)
                 continue
+            part = part.strip()
 
             # Is it possible to match to time_range_lookup
             matched = False

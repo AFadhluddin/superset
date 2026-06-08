@@ -168,6 +168,23 @@ def test_parse_boolean_string(test_input: Optional[str], expected: bool):
     assert parse_boolean_string(test_input) == expected
 
 
+@pytest.mark.parametrize(
+    "test_input,expected",
+    [
+        ("  true  ", True),
+        ("  1  ", True),
+        (" yes ", True),
+        ("  false  ", False),
+        ("  0  ", False),
+        (" \t true \n ", True),
+    ],
+)
+def test_parse_boolean_string_strips_whitespace(
+    test_input: str, expected: bool
+) -> None:
+    assert parse_boolean_string(test_input) == expected
+
+
 def test_int_values():
     assert cast_to_boolean(1) is True
     assert cast_to_boolean(0) is False

@@ -230,7 +230,7 @@ export const CustomizationsBadge = ({ chartId }: CustomizationsBadgeProps) => {
     return applicableCustomizations.filter(customization => {
       const filterState = dataMask[customization.id]?.filterState;
       const value = filterState?.value;
-      return !!value;
+      return value != null && value !== '';
     });
   }, [applicableCustomizations, chartType, dataMask]);
 
