@@ -195,6 +195,20 @@ test('extractLabel uses value when label is undefined', () => {
   expect(extractLabel({ label: undefined, value: ['a'] })).toBe('a');
 });
 
+test('extractLabel preserves zero in multi-value arrays', () => {
+  expect(extractLabel({ value: [0, 1] })).toBe('0, 1');
+  expect(extractLabel({ value: [0, 1, 2] })).toBe('0, 1, 2');
+  expect(extractLabel({ value: [0] })).toBe('0');
+});
+
+test('extractLabel preserves scalar zero value', () => {
+  expect(extractLabel({ value: 0 })).toBe('0');
+});
+
+test('extractLabel still excludes null, undefined, and empty string alongside zero', () => {
+  expect(extractLabel({ value: [null, 0, '', undefined, 1] })).toBe('0, 1');
+});
+
 test('getAppliedColumnsWithFallback returns columns from query response when available', () => {
   const chart = {
     queriesResponse: [
