@@ -195,6 +195,15 @@ test('extractLabel uses value when label is undefined', () => {
   expect(extractLabel({ label: undefined, value: ['a'] })).toBe('a');
 });
 
+test('extractLabel preserves falsy-but-valid values like 0 and false', () => {
+  expect(extractLabel({ value: 0 })).toBe('0');
+  expect(extractLabel({ value: [0] })).toBe('0');
+  expect(extractLabel({ value: [0, 1] })).toBe('0, 1');
+  expect(extractLabel({ value: false })).toBe('false');
+  expect(extractLabel({ value: [false] })).toBe('false');
+  expect(extractLabel({ value: [false, true] })).toBe('false, true');
+});
+
 test('getAppliedColumnsWithFallback returns columns from query response when available', () => {
   const chart = {
     queriesResponse: [
